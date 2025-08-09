@@ -1,0 +1,45 @@
+.DriveHints {
+	display: flex;
+	flex-direction: column;
+	padding-bottom: 12px;
+}
+
+.RatioNotes {
+	font-family: Courier New;
+	font-size: 9pt;
+	color: #485d6c;
+	align-self: start;
+	margin-left: 7px;
+}
+
+.NotesTotal {}
+
+.NotesAvailable {
+	font-weight: 600;
+}
+
+.NotesUnitSize {}
+
+.RatioBar {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+}
+
+
+.BarContainer {
+	height: 5px;
+	width: 90%;
+	background: #485d6c;
+	border-radius: 4px;
+	padding: 2px;
+}
+
+.BarProgress {
+	height: 5px;
+	background: linear-gradient(328deg, rgba(204, 217, 208, 1) 0%, rgba(245, 244, 225, 1) 100%);
+	border-bottom-left-radius: 3px;
+	border-top-left-radius: 3px;
+
+}

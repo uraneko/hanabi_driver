@@ -1,0 +1,41 @@
+.DriveShortcuts {}
+
+.Shortcuts {
+	margin-top: 1em;
+}
+
+.ShortcutEntry {}
+
+.ShortcutButton {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+
+	background: none;
+	border: none;
+
+	width: 100%;
+	margin-top: 0.5em;
+
+	&>svg {
+		width: 1.6em;
+		fill: #485d6c;
+	}
+
+	&:hover {
+		background: #89a6b236;
+		border-radius: 3px;
+		padding: 1px;
+	}
+}
+
+.ShortcutTitle {
+	margin-left: 0.5em;
+	align-self: end;
+
+	color: #485d6c;
+	font-weight: 600;
+	font-size: 10pt;
+	font-family: carlito;
+
+}
