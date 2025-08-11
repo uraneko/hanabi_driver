@@ -1,8 +1,10 @@
-import { type Component, createEffect, createResource, For } from 'solid-js';
+import { type Component, createEffect, createSignal, createResource, For } from 'solid-js';
 
 import rustSVG from '../../../file_icons/rust.svg?raw';
 import dirSVG from '../../../file_icons/dir.svg?raw'
 import helpSVG from '../../../file_icons/help.svg?raw'
+
+import { WindowMenu } from './WindowMenu';
 
 import { type _, parse_svg } from '../App';
 
@@ -48,8 +50,23 @@ const Entry = (props: { meta: _ }) => {
 export const FilesWindow: Component = () => {
 	const [data, { mutate, refetch }] = createResource(fetchCurrentDir);
 
+	const [menu, toggle] = createSignal({ hide: true, x: 0, y: 0 });
+	const toggle_menu = (e: Event) => {
+		e.preventDefault();
+		let me = (e as MouseEvent);
+
+		toggle((params: _) => {
+			return {
+				hide: !params.hide,
+				x: me.clientX,
+				y: me.clientY,
+			}
+		})
+	};
+
 	return (
-		<div class={styles.FilesWindow}>
+		<div class={styles.FilesWindow} on:contextmenu={toggle_menu}>
+			<WindowMenu hide={menu().hide} x={menu().x} y={menu().y} />
 			<For each={data()}>
 				{(meta: _) => <Entry meta={meta} />}
 			</For>
