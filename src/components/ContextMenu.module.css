@@ -1,11 +1,10 @@
-.WindowMenu {
+.ContextMenu {
 	display: flex;
 	flex-direction: column;
 
 	position: absolute;
 	background: #485D6C;
 	color: aliceblue;
-	padding: 8px;
 	border-radius: 3px;
 	border: none;
 
@@ -14,6 +13,29 @@
 
 	width: 134px;
 	height: max-content;
+
+}
+
+.ContextMenu[hide="true"] {
+	display: none;
+}
+
+
+.WindowMenu {
+	display: flex;
+	flex-direction: column;
+
+	background: #485D6C;
+	color: aliceblue;
+	padding: 8px;
+	/* border-radius: 3px; */
+	/* border: none; */
+
+	justify-content: center;
+	align-items: start;
+
+	/* width: 134px; */
+	/* height: max-content; */
 
 	&>button {
 		background: none;
@@ -29,8 +51,4 @@
 			padding: 2px;
 		}
 	}
-}
-
-.WindowMenu[hide="true"] {
-	display: none;
 }

@@ -15,11 +15,22 @@
 	flex-direction: column;
 }
 
-.File {}
-
-.Parent {}
-
-.Children {
+.DirEntries {
 	display: flex;
 	flex-direction: column;
+}
+
+.File {}
+
+.File,
+.DirName {
+	background: none;
+	border: none;
+	align-self: start;
+
+	&:hover {
+		background: #89a6b236;
+		border-radius: 3px;
+		padding: 3px;
+	}
 }

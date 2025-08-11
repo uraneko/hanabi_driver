@@ -1,4 +1,5 @@
-import { type Component, createResource, type JSX } from 'solid-js';
+import { type Component, For, createResource, type JSX, } from 'solid-js';
+import { type _ } from '../App';
 
 import styles from './FileTree.module.css';
 
@@ -23,7 +24,7 @@ export const FileTree: Component = () => {
 
 	return (
 		<div class={styles.FileTree}>
-			{data()}
+			<Dir level={0} name={data()?.dirs[0]} tree={data()} />
 		</div>
 	);
 };
@@ -32,43 +33,43 @@ export const File: Component<{ level: number, name: string, }> = (props: { level
 	const level = () => props.level;
 	const name = () => props.name;
 
-	return (<div class={styles.File} level={level()}>{name()}</div>);
+	return (<button style={{
+		"padding-left": `${level() * 10}px`
+	}} class={styles.File} level={level()}>{name()}</button>);
 };
 
-export const Dir: Component<{ level: number, name: string, nodes: JSX.Element }> = (props: { level: number, name: string, nodes: JSX.Element }) => {
+function dir_nodes(json: _, dir: string) {
+	const idx = json?.dirs.indexOf(dir)
+
+	return json?.nodes[idx]
+}
+
+function is_dir(dirs: string[], maybe_dir: string): boolean {
+	return dirs.includes(maybe_dir);
+}
+
+export const Dir: Component<{ level: number, name: string, tree: _ }> = (props: { level: number, name: string, tree: _ }) => {
 	const level = () => props.level;
 	const name = () => props.name;
-	const nodes = () => props.nodes;
+	const dirs = () => props.tree.dirs;
+	const tree = () => props.tree;
 
 	return (
-		<div class={styles.File} level={level()}>{name()}
-			<Parent class={styles.Parent} level={level()} name={name()} />
-			<Children level={level()} nodes={nodes()} />
-		</div>
-	);
-};
-
-const Children = (props: { level: number, nodes: JSX.Element }) => {
-	let level = () => props.level;
-	let nodes = () => props.nodes;
-
-	return (
-		<div class={styles.Children} level={level()}>
-			{nodes()}
-		</div>
-	)
-};
-
-const Parent = (props: { name: string, level: number, }) => {
-	let level = () => props.level;
-	let name = () => props.name;
-
-
-	return (
-		<div style={{
-			"padding-left": `${level() * 5}px`
-		}} class={styles.Parent} level={level()}>
-			<span>{name()}</span>
+		<div class={styles.Dir} level={level()}>
+			<button style={{
+				"padding-left": `${level() * 10}px`,
+			}} class={styles.DirName}>{name()}</button>
+			<div class={styles.DirEntries}>
+				<For each={dir_nodes(tree(), name())}>
+					{(entry: string) => {
+						if (is_dir(dirs(), entry)) {
+							return <Dir name={entry} level={level() + 1} tree={tree()} />
+						} else {
+							return <File name={entry} level={level() + 1} />
+						}
+					}}
+				</For >
+			</div>
 		</div>
 	);
 };

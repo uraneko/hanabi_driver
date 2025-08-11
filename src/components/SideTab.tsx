@@ -9,10 +9,10 @@ import styles from './SideTab.module.css';
 type _ = any;
 
 export const SideTab: Component = () => {
-	// <FileTree />
 	return (
 		<div class={styles.SideTab}>
 			<DriveShortcuts />
+			<FileTree />
 			<DriveHints />
 		</div>
 	);

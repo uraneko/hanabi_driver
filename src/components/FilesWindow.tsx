@@ -4,7 +4,7 @@ import rustSVG from '../../../file_icons/rust.svg?raw';
 import dirSVG from '../../../file_icons/dir.svg?raw'
 import helpSVG from '../../../file_icons/help.svg?raw'
 
-import { WindowMenu } from './WindowMenu';
+import { WindowMenu, ContextMenu } from './ContextMenu';
 
 import { type _, parse_svg } from '../App';
 
@@ -66,11 +66,11 @@ export const FilesWindow: Component = () => {
 
 	return (
 		<div class={styles.FilesWindow} on:contextmenu={toggle_menu}>
-			<WindowMenu hide={menu().hide} x={menu().x} y={menu().y} />
-			<For each={data()}>
+			<ContextMenu hide={menu().hide} x={menu().x} y={menu().y} inner={<WindowMenu />} />
+			<For each={data()} >
 				{(meta: _) => <Entry meta={meta} />}
-			</For>
-		</div>
+			</For >
+		</div >
 	);
 };
 
