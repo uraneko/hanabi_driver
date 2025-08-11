@@ -1,1 +1,25 @@
-.FileTree {}
+.FileTree {
+
+	span,
+	div {
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		overflow: hidden;
+	}
+
+}
+
+
+.Dir {
+	display: flex;
+	flex-direction: column;
+}
+
+.File {}
+
+.Parent {}
+
+.Children {
+	display: flex;
+	flex-direction: column;
+}

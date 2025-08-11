@@ -34,16 +34,16 @@ export const DriveHints: Component = () => {
 };
 
 type HintsMap = {
-	total: number, t_unit: string, available: number, a_unit: string
+	total: number, t_unit: string, used: number, u_unit: string
 };
 
 const RatioNotes: Component<{ hints: HintsMap }> = (props: { hints: HintsMap }) => {
 	const hints = () => props.hints;
 
 	return (<div class={styles.RatioNotes} >
-		<span class={styles.NotesAvailable}>{hints()?.available}&hairsp;{hints()?.a_unit}</span>
+		<span class={styles.NotesUsed}>{hints()?.used}&thinsp;{hints()?.u_unit}</span>
 		<span>/</span>
-		<span class={styles.NotesTotal}>{hints()?.total}&hairsp;{hints()?.t_unit}</span>
+		<span class={styles.NotesTotal}>{hints()?.total}&thinsp;{hints()?.t_unit}</span>
 	</div >)
 };
 
@@ -55,7 +55,7 @@ const RatioBar: Component<{ hints: HintsMap }> = (props: { hints: HintsMap }) =>
 	return (<div class={styles.RatioBar}>
 		<div class={styles.BarContainer}>
 			<div class={styles.BarProgress} style={{
-				width: `${ratio(hints()?.total, hints()?.available)}%`
+				width: `${ratio(hints()?.total, hints()?.used)}%`
 			}}></div>
 		</div>
 	</div>);

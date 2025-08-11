@@ -3,7 +3,7 @@ import { type Component, Show } from 'solid-js';
 import styles from './App.module.css';
 
 import { SideTab } from './components/SideTab';
-import { FileTree } from './components/FileTree';
+import { FilesWindow } from './components/FilesWindow';
 
 export const DEV_SERVER: string = "http://127.0.0.1:9998";
 
@@ -14,7 +14,7 @@ export const App: Component = () => {
 	return (
 		<div class={styles.App}>
 			<SideTab />
-			<FileTree />
+			<FilesWindow />
 		</div >
 	);
 }
@@ -22,6 +22,8 @@ export const App: Component = () => {
 export const parse_svg = (svg: string): SVGSVGElement => {
 	return new DOMParser().parseFromString(svg, "image/svg+xml").querySelector("svg")!;
 }
+
+export type _ = any;
 
 export function map_from_json(json: Object): Map<string, _> {
 	const map = new Map();
@@ -31,3 +33,5 @@ export function map_from_json(json: Object): Map<string, _> {
 
 	return map;
 }
+
+

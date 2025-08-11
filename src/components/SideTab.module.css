@@ -2,18 +2,10 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
+	grid-row: 1/13;
+	grid-column: 1/3;
 
 	padding: 0 5px;
 
-	grid-row: 1/13;
-	grid-column: 1/2;
-
 	background: #d7e9d578;
-}
-
-button {
-	cursor: pointer;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-	overflow: hidden;
 }

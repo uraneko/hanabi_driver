@@ -2,19 +2,21 @@
 	display: flex;
 	flex-direction: column;
 	padding-bottom: 12px;
+	align-items: start;
 }
 
 .RatioNotes {
 	font-family: Courier New;
 	font-size: 9pt;
 	color: #485d6c;
-	align-self: start;
-	margin-left: 7px;
+
+	margin-left: 5%;
+	margin-top: 0.4em;
 }
 
 .NotesTotal {}
 
-.NotesAvailable {
+.NotesUsed {
 	font-weight: 600;
 }
 
@@ -25,6 +27,8 @@
 	flex-direction: row;
 	align-items: center;
 	justify-content: center;
+
+	width: 100%;
 }
 
 

@@ -1,7 +1,48 @@
-.DriveShortcuts {}
+.DriveShortcuts {
+	display: flex;
+	flex-direction: column;
+}
+
+button {
+	cursor: pointer;
+}
+
+.Blinds {
+	background: none;
+	border: none;
+	padding: 0;
+	margin: 0;
+	padding-top: 1em;
+	margin-bottom: 0.2em;
+
+	display: flex;
+	flex-direction: column;
+	align-self: center;
+	align-items: center;
+
+	width: -moz-available;
+
+	svg {
+		position: absolute;
+		width: 1.2em;
+		fill: #485d6c;
+	}
+}
+
+.BlindsTab {
+	width: 100%;
+	height: 6px;
+	background: #485d6c;
+	border-radius: 1px;
+}
 
 .Shortcuts {
-	margin-top: 1em;
+	display: flex;
+	flex-direction: column;
+}
+
+.Shortcuts[hide="true"] {
+	display: none !important;
 }
 
 .ShortcutEntry {}
