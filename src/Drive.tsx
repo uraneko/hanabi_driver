@@ -25,14 +25,14 @@ type DriveCtx = {
 	// what is the user's Files drive base path
 	files_base: string,
 	// what is the current dir of the Files drive
-	files_dir: string,
+	files_dir: string[],
 };
 
 const DRIVE_CONTEXT = createContext([
 	{
 		current_drive: "Files",
 		files_base: ".",
-		files_dir: "",
+		files_dir: [""],
 	} as DriveCtx,
 ]);
 

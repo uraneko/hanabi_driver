@@ -39,7 +39,7 @@ const Entry = (props: { meta: _ }) => {
 	const icon = entry_icon(meta()?.kind, meta()?.ext);
 
 	return (
-		<button class={styles.Entry}>
+		<button class={styles.Entry} kind={meta()?.kind}>
 			{icon}
 			<span class={styles.EntryName}>{meta()?.name}</span>
 			<span class={styles.EntrySize}>{(meta()?.size.size).toFixed(2)}&thinsp;{meta()?.size.unit}</span>
@@ -54,15 +54,27 @@ export const FilesWindow: Component = () => {
 	const [state] = drive_ctx();
 
 	const [dir, cd] = createSignal(state.files_dir);
-	const change_dir = (e: Event) => {
+
+	const inner_dir = (e: Event) => {
 		const et = (e.target as HTMLElement);
-		const new_dir = dir() + "/" + et.parentElement!.children[1].textContent!;
-		console.log(new_dir);
-		cd((dir: string) => new_dir)
-	}
+		const parent = et.parentElement!;
+		if (parent.getAttribute("kind") != "Dir") return;
+
+		const new_segment = parent.children[1].textContent!;
+
+		cd((dir: string[]) => [...dir, new_segment]);
+	};
+
+	// better hook this to the Drive component and check if mouse is inside FilesWindow
+	const outer_dir = (e: Event) => {
+		const kbe = (e as KeyboardEvent);
+		if (!(kbe.key == "ArrowLeft" && kbe.shiftKey)) return;
+
+		cd((dir: string[]) => dir.length > 1 ? dir.slice(0, dir.length - 1) : dir)
+	};
 
 	async function fetchWrapper() {
-		return fetchCurrentDir(state.files_base + dir())
+		return fetchCurrentDir(state.files_base + dir().join('/'))
 	}
 
 	const [data, { mutate, refetch }] = createResource(dir, fetchWrapper);
@@ -119,28 +131,95 @@ export const FilesWindow: Component = () => {
 		})
 	};
 
+	// MouseArea events
+	const [hl, hl_update] = createSignal({ hide: true, down: false, x: 0, y: 0, w: 1, h: 1 });
+	const move = (e: Event) => {
+		const me = (e as MouseEvent);
+		const x = me.clientX;
+		const y = me.clientY;
+
+		hl_update((params: _) => {
+			return {
+				hide: false,
+				down: true,
+				x: x,
+				y: y,
+				w: params.w,
+				h: params.h,
+			}
+		})
+	};
+
+	const release = () => hl_update((props: _) => {
+		return {
+			down: false,
+			hide: true,
+			x: props.x,
+			y: props.y,
+			w: props.w,
+			h: props.h,
+		}
+	});
+
+	const resize = (e: Event) => {
+
+		if (!hl().down) return;
+		const me = (e as MouseEvent);
+		const x1 = me.clientX;
+		const y1 = me.clientY;
+
+		console.log(x1, y1);
+
+		hl_update((params: _) => {
+			const w = x1 - params.x;
+			const h = y1 - params.y;
+
+			return {
+				hide: false,
+				down: true,
+				x: params.x,
+				y: params.y,
+				w: w,
+				h: h,
+			}
+		})
+	}
+
+
 	return (
 		<div class={styles.FilesWindow}
+			onmousemove={resize}
+			onMousedown={move}
+			on:mouseup={release}
+
+			onmousedown={inner_dir}
+			onkeydown={outer_dir}
+
 			on:contextmenu={show_menu}
 			on:mousedown={hide_menu}
-			onmousedown={change_dir}
 			on:keydown={eschide_menu} tabindex='0' files-dir={dir()}>
 
 			<ContextMenu hide={menu().hide} x={menu().x} y={menu().y} inner={<WindowMenu />} />
 			<For each={data()} >
 				{(meta: _) => <Entry meta={meta} />}
 			</For >
+			<MouseArea hl={hl()} update={hl_update} />
 		</div >
 	);
 };
 
-const Toolkit = () => {
+const MouseArea = (props: { hl: _ }) => {
+	const hl = () => props.hl;
+
+
 	return (
-		<div>
+		<div style={{
+			width: `${hl().w}px`,
+			height: `${hl().h}px`,
+			left: `${hl().x}px`,
+			top: `${hl().y}px`,
+		}} class={styles.MouseArea} hide={hl().hide} down={hl().down}>
 		</div>
 	);
+
 };
-
-const FileUtils = () => { };
-
-const DirsUtils = () => { };

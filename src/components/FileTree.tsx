@@ -13,10 +13,7 @@ async function fetchFileTreeSsr(): Promise<HTMLElement> {
 			}
 		});
 
-	const json = await res.json();
-	console.log(json);
-
-	return json
+	return await res.json();
 }
 
 export const FileTree: Component = () => {

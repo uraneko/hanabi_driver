@@ -53,11 +53,7 @@ export const Blinds = (props: _) => {
 	const svg = parse_svg(jetSVG);
 
 	const update = () => props.setter;
-	const toggle_display = () => update()((display: boolean) => {
-		console.log(display);
-
-		return !display
-	});
+	const toggle_display = () => update()((display: boolean) => !display);
 
 	return (
 		<button type="button" class={styles.Blinds} on:click={toggle_display}>

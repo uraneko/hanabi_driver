@@ -2,10 +2,12 @@
 	background: none;
 	border-radius: 1px;
 	border: 1px solid #485D6C;
-	border-left: none;
+	/* border-left: none; */
 	border-right: none;
 	grid-column: 3/13;
 	grid-row: 2/12;
+
+	overflow: auto;
 
 	/* margin-left: 12px; */
 }
@@ -48,4 +50,14 @@
 
 .EntryCreated {
 	grid-column: 4/5;
+}
+
+.MouseArea {
+	display: flex;
+	position: absolute;
+	background: black;
+
+	&[hide="true"] {
+		display: none
+	}
 }
