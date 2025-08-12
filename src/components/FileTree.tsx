@@ -1,11 +1,11 @@
-import { type Component, For, createResource, type JSX, } from 'solid-js';
-import { type _ } from '../Drive';
+import { type Component, For, createSignal, createResource, type JSX, } from 'solid-js';
+import { type _, drive_ctx, DriveCtx } from '../Drive';
 
 import styles from './FileTree.module.css';
 
 
-async function fetchFileTreeSsr(): Promise<HTMLElement> {
-	const res = await fetch(`http://127.0.0.1:9998/ftree?path=src`,
+async function fetchFileTree(base: string): Promise<HTMLElement> {
+	const res = await fetch(`http://127.0.0.1:9998/ftree?path=${base}`,
 		{
 			method: "GET",
 			headers: {
@@ -17,11 +17,36 @@ async function fetchFileTreeSsr(): Promise<HTMLElement> {
 }
 
 export const FileTree: Component = () => {
-	const [data, { mutate, refetch }] = createResource(fetchFileTreeSsr);
+	const { drive, sync } = drive_ctx();
+
+	const move_dir = (e: Event) => {
+		const et = (e.target as HTMLElement);
+		console.log(et);
+		if (et.className != `${styles.DirName}`) return;
+
+		let new_path = et.textContent!
+		let path = new_path == "/" ? [""] : new_path.split('/');
+
+		sync((drive: DriveCtx) => {
+			return {
+				dir: path,
+				base: drive.base,
+				drive: drive.drive,
+			}
+		});
+		console.log(drive());
+	};
+
+	async function fetchWrapper() {
+		return fetchFileTree(drive().base);
+	}
+
+	const [tree, { mutate, refetch }] = createResource(fetchWrapper);
 
 	return (
-		<div class={styles.FileTree}>
-			<Dir level={0} name={data()?.dirs[0]} tree={data()} />
+		<div class={styles.FileTree}
+			onclick={move_dir}>
+			<Dir level={0} name={tree()?.dirs[0]} tree={tree()} />
 		</div>
 	);
 };

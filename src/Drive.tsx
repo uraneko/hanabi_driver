@@ -1,4 +1,4 @@
-import { type Component, createContext, useContext } from 'solid-js';
+import { type Component, createContext, createSignal, useContext } from 'solid-js';
 
 import styles from './Drive.module.css';
 
@@ -19,25 +19,27 @@ export const Drive: Component = () => {
 	);
 }
 
-type DriveCtx = {
+export type DriveCtx = {
 	// which of the 4 drives is the user currently on 
-	current_drive: "Files" | "Shared" | "Backup" | "Trash",
+	drive: "Files" | "Shared" | "Backup" | "Trash",
 	// what is the user's Files drive base path
-	files_base: string,
+	base: string,
 	// what is the current dir of the Files drive
-	files_dir: string[],
+	dir: string[],
 };
 
-const DRIVE_CONTEXT = createContext([
+const [drive, sync] = createSignal(
 	{
-		current_drive: "Files",
-		files_base: ".",
-		files_dir: [""],
-	} as DriveCtx,
-]);
+		drive: "Files",
+		base: ".",
+		dir: [""],
+	} as DriveCtx
+);
+
+const ctx = createContext({ drive, sync });
 
 export function drive_ctx() {
-	return useContext(DRIVE_CONTEXT)
+	return useContext(ctx)
 }
 
 export const parse_svg = (svg: string): SVGSVGElement => {

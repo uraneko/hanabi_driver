@@ -4,15 +4,15 @@ import rustSVG from '../../../file_icons/rust.svg?raw';
 import dirSVG from '../../../file_icons/dir.svg?raw'
 import helpSVG from '../../../file_icons/help.svg?raw'
 
-import { drive_ctx, DEV_SERVER } from '../Drive';
+import { drive_ctx, DriveCtx, DEV_SERVER } from '../Drive';
 import { WindowMenu, ContextMenu } from './ContextMenu';
 
 import { type _, parse_svg } from '../Drive';
 
 import styles from './FilesWindow.module.css';
 
-async function fetchCurrentDir(base: string) {
-	const res = await fetch(DEV_SERVER + `/drive/read_dir?path=${base}`,
+async function fetchCurrentDir(path: string) {
+	const res = await fetch(DEV_SERVER + `/drive/read_dir?path=${path}`,
 		{
 			method: "GET",
 			headers: {
@@ -48,12 +48,8 @@ const Entry = (props: { meta: _ }) => {
 	);
 };
 
-
-
 export const FilesWindow: Component = () => {
-	const [state] = drive_ctx();
-
-	const [dir, cd] = createSignal(state.files_dir);
+	const { drive, sync } = drive_ctx();
 
 	const inner_dir = (e: Event) => {
 		const et = (e.target as HTMLElement);
@@ -62,7 +58,13 @@ export const FilesWindow: Component = () => {
 
 		const new_segment = parent.children[1].textContent!;
 
-		cd((dir: string[]) => [...dir, new_segment]);
+		sync((drive: DriveCtx) => {
+			return {
+				dir: [...drive.dir, new_segment],
+				base: drive.base,
+				drive: drive.drive,
+			}
+		});
 	};
 
 	// better hook this to the Drive component and check if mouse is inside FilesWindow
@@ -70,14 +72,17 @@ export const FilesWindow: Component = () => {
 		const kbe = (e as KeyboardEvent);
 		if (!(kbe.key == "ArrowLeft" && kbe.shiftKey)) return;
 
-		cd((dir: string[]) => dir.length > 1 ? dir.slice(0, dir.length - 1) : dir)
+		sync((drive: DriveCtx) => {
+			return {
+				dir: drive.dir.length > 1 ? drive.dir.slice(0, drive.dir.length - 1) : drive.dir,
+				base: drive.base,
+				drive: drive.drive
+			}
+		});
 	};
 
-	async function fetchWrapper() {
-		return fetchCurrentDir(state.files_base + dir().join('/'))
-	}
-
-	const [data, { mutate, refetch }] = createResource(dir, fetchWrapper);
+	const [data, { mutate, refetch }] =
+		createResource(() => drive().base + drive().dir.join('/'), fetchCurrentDir);
 
 	const [menu, toggle] = createSignal({ hide: true, x: 0, y: 0 });
 	const show_menu = (e: Event) => {
@@ -135,7 +140,7 @@ export const FilesWindow: Component = () => {
 	const [hl, hl_update] = createSignal({
 		hide: true, down: false, x: 0, y: 0, rx: false, ry: false, w: 1, h: 1
 	});
-	const move = (e: Event) => {
+	const locate = (e: Event) => {
 		const me = (e as MouseEvent);
 		const x = me.clientX;
 		const y = me.clientY;
@@ -168,9 +173,7 @@ export const FilesWindow: Component = () => {
 			}
 		});
 
-
 	const resize = (e: Event) => {
-
 		if (!hl().down) return;
 		const me = (e as MouseEvent);
 		const x1 = me.clientX;
@@ -193,11 +196,10 @@ export const FilesWindow: Component = () => {
 		})
 	}
 
-
 	return (
 		<div class={styles.FilesWindow}
 			onmousemove={resize}
-			onMousedown={move}
+			onpointerdown={locate}
 			on:mouseup={release}
 
 			onmousedown={inner_dir}
@@ -205,7 +207,7 @@ export const FilesWindow: Component = () => {
 
 			on:contextmenu={show_menu}
 			on:mousedown={hide_menu}
-			on:keydown={eschide_menu} tabindex='0' files-dir={dir()}>
+			on:keydown={eschide_menu} tabindex='0'>
 
 			<ContextMenu hide={menu().hide} x={menu().x} y={menu().y} inner={<WindowMenu />} />
 			<For each={data()} >
