@@ -27,6 +27,10 @@
 	align-items: start;
 }
 
+.DirEntries[show="false"] {
+	display: none;
+}
+
 .File {}
 
 .File,

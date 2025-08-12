@@ -21,7 +21,6 @@ export const FileTree: Component = () => {
 
 	const move_dir = (e: Event) => {
 		const et = (e.target as HTMLElement);
-		console.log(et);
 		if (et.className != `${styles.DirName}`) return;
 
 		let new_path = et.textContent!
@@ -34,7 +33,6 @@ export const FileTree: Component = () => {
 				drive: drive.drive,
 			}
 		});
-		console.log(drive());
 	};
 
 	async function fetchWrapper() {
@@ -76,12 +74,25 @@ export const Dir: Component<{ level: number, name: string, tree: _ }> = (props: 
 	const dirs = () => props.tree.dirs;
 	const tree = () => props.tree;
 
+	const [show, toggle] = createSignal(false);
+	const toggle_entries = (e: Event) => {
+		const kbe = (e as KeyboardEvent);
+		if (!kbe.shiftKey) return;
+		e.stopPropagation();
+		const et = (e.target as HTMLElement);
+		if (et.className != `${styles.DirName}`) return;
+
+		toggle((show: boolean) => !show)
+	};
+
 	return (
-		<div class={styles.Dir} level={level()}>
+		<div class={styles.Dir} level={level()}
+			on:click={toggle_entries}>
+
 			<button style={{
 				"padding-left": `${level() * 10}px`,
 			}} class={styles.DirName}>{name()}</button>
-			<div class={styles.DirEntries}>
+			<div class={styles.DirEntries} show={show()}>
 				<For each={dir_nodes(tree(), name())}>
 					{(entry: string) => {
 						if (is_dir(dirs(), entry)) {
