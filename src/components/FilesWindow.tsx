@@ -4,14 +4,15 @@ import rustSVG from '../../../file_icons/rust.svg?raw';
 import dirSVG from '../../../file_icons/dir.svg?raw'
 import helpSVG from '../../../file_icons/help.svg?raw'
 
+import { drive_ctx, DEV_SERVER } from '../Drive';
 import { WindowMenu, ContextMenu } from './ContextMenu';
 
 import { type _, parse_svg } from '../Drive';
 
 import styles from './FilesWindow.module.css';
 
-async function fetchCurrentDir() {
-	const res = await fetch("http://127.0.0.1:9998/drive/read_dir?path=src",
+async function fetchCurrentDir(base: string) {
+	const res = await fetch(DEV_SERVER + `/drive/read_dir?path=${base}`,
 		{
 			method: "GET",
 			headers: {
@@ -47,8 +48,24 @@ const Entry = (props: { meta: _ }) => {
 	);
 };
 
+
+
 export const FilesWindow: Component = () => {
-	const [data, { mutate, refetch }] = createResource(fetchCurrentDir);
+	const [state] = drive_ctx();
+
+	const [dir, cd] = createSignal(state.files_dir);
+	const change_dir = (e: Event) => {
+		const et = (e.target as HTMLElement);
+		const new_dir = dir() + "/" + et.parentElement!.children[1].textContent!;
+		console.log(new_dir);
+		cd((dir: string) => new_dir)
+	}
+
+	async function fetchWrapper() {
+		return fetchCurrentDir(state.files_base + dir())
+	}
+
+	const [data, { mutate, refetch }] = createResource(dir, fetchWrapper);
 
 	const [menu, toggle] = createSignal({ hide: true, x: 0, y: 0 });
 	const show_menu = (e: Event) => {
@@ -74,7 +91,6 @@ export const FilesWindow: Component = () => {
 		toggle((params: _) => {
 			const x = () => params.x;
 			const y = () => params.y;
-			console.log(x(), y(), w, h, new_x, new_y);
 
 			return new_x >= x() && new_x < x() + w && new_y >= y() && new_y < y() + h ?
 				{
@@ -86,7 +102,6 @@ export const FilesWindow: Component = () => {
 					x: 0,
 					y: 0,
 				}
-
 		})
 	};
 
@@ -108,7 +123,8 @@ export const FilesWindow: Component = () => {
 		<div class={styles.FilesWindow}
 			on:contextmenu={show_menu}
 			on:mousedown={hide_menu}
-			on:keydown={eschide_menu} tabindex='0' >
+			onmousedown={change_dir}
+			on:keydown={eschide_menu} tabindex='0' files-dir={dir()}>
 
 			<ContextMenu hide={menu().hide} x={menu().x} y={menu().y} inner={<WindowMenu />} />
 			<For each={data()} >
