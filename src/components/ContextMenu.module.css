@@ -9,11 +9,13 @@
 	border: none;
 
 	justify-content: center;
-	align-items: start;
+	align-items: center;
+	padding: 8px;
 
 	width: 134px;
-	height: max-content;
+	height: 164px;
 
+	white-space: nowrap;
 }
 
 .ContextMenu[hide="true"] {
@@ -27,24 +29,28 @@
 
 	background: #485D6C;
 	color: aliceblue;
-	padding: 8px;
 	/* border-radius: 3px; */
 	/* border: none; */
 
-	justify-content: center;
+	justify-content: start;
 	align-items: start;
+	width: 100%;
+	height: 100%;
 
 	/* width: 134px; */
 	/* height: max-content; */
 
 	&>button {
+		text-overflow: ellipsis;
+		overflow: hidden;
+		text-align: start;
+		width: 100%;
+		height: 100%;
+		padding: 2px 1px;
+
 		background: none;
 		border: none;
 		color: aliceblue;
-
-		white-space: nowrap;
-		text-overflow: ellipsis;
-		overflow: hidden;
 
 		&:hover {
 			background: #89a6b236;

@@ -4,7 +4,7 @@ import styles from './DriveHints.module.css';
 
 import driveRatioSVG from '../../../assets/drive-ratio.svg?raw';
 
-import { parse_svg, DEV_SERVER, map_from_json } from '../App';
+import { parse_svg, DEV_SERVER, map_from_json } from '../Drive';
 
 type _ = any;
 

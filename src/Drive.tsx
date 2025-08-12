@@ -1,6 +1,6 @@
 import { type Component, Show } from 'solid-js';
 
-import styles from './App.module.css';
+import styles from './Drive.module.css';
 
 import { SideTab } from './components/SideTab';
 import { FilesWindow } from './components/FilesWindow';
@@ -10,9 +10,9 @@ export const DEV_SERVER: string = "http://127.0.0.1:9998";
 // import { MainWindow } from './components/MainWindow';
 // import { FileHints } from './components/FileHints';
 
-export const App: Component = () => {
+export const Drive: Component = () => {
 	return (
-		<div class={styles.App}>
+		<div class={styles.Drive}>
 			<SideTab />
 			<FilesWindow />
 		</div >

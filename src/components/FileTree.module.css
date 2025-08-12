@@ -13,20 +13,26 @@
 .Dir {
 	display: flex;
 	flex-direction: column;
+	align-items: start;
+	width: 100%;
 }
 
 .DirEntries {
+	width: 100%;
 	display: flex;
 	flex-direction: column;
+	align-items: start;
 }
 
 .File {}
 
 .File,
 .DirName {
+	text-align: start;
 	background: none;
 	border: none;
 	align-self: start;
+	width: 100%;
 
 	&:hover {
 		background: #89a6b236;

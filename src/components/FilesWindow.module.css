@@ -1,6 +1,10 @@
 .FilesWindow {
-	background: wheat;
-	grid-column: 3/12;
+	background: none;
+	border-radius: 1px;
+	border: 1px solid #485D6C;
+	border-left: none;
+	border-right: none;
+	grid-column: 3/13;
 	grid-row: 2/12;
 
 	/* margin-left: 12px; */

@@ -6,7 +6,7 @@ import helpSVG from '../../../file_icons/help.svg?raw'
 
 import { WindowMenu, ContextMenu } from './ContextMenu';
 
-import { type _, parse_svg } from '../App';
+import { type _, parse_svg } from '../Drive';
 
 import styles from './FilesWindow.module.css';
 
@@ -51,21 +51,65 @@ export const FilesWindow: Component = () => {
 	const [data, { mutate, refetch }] = createResource(fetchCurrentDir);
 
 	const [menu, toggle] = createSignal({ hide: true, x: 0, y: 0 });
-	const toggle_menu = (e: Event) => {
+	const show_menu = (e: Event) => {
 		e.preventDefault();
-		let me = (e as MouseEvent);
+		const me = (e as MouseEvent);
 
 		toggle((params: _) => {
 			return {
-				hide: !params.hide,
+				hide: false,
 				x: me.clientX,
 				y: me.clientY,
 			}
 		})
 	};
 
+	const w = 134;
+	const h = 164;
+	const hide_menu = (e: Event) => {
+		const me = (e as MouseEvent);
+		const new_x = me.clientX;
+		const new_y = me.clientY;
+
+		toggle((params: _) => {
+			const x = () => params.x;
+			const y = () => params.y;
+			console.log(x(), y(), w, h, new_x, new_y);
+
+			return new_x >= x() && new_x < x() + w && new_y >= y() && new_y < y() + h ?
+				{
+					hide: false,
+					x: x(),
+					y: y(),
+				} : {
+					hide: true,
+					x: 0,
+					y: 0,
+				}
+
+		})
+	};
+
+	const eschide_menu = (e: Event) => {
+		const kbe = (e as KeyboardEvent);
+		const esc = kbe.key;
+		if (esc != "Escape") return;
+
+		toggle((_params: _) => {
+			return {
+				hide: true,
+				x: 0,
+				y: 0,
+			}
+		})
+	};
+
 	return (
-		<div class={styles.FilesWindow} on:contextmenu={toggle_menu}>
+		<div class={styles.FilesWindow}
+			on:contextmenu={show_menu}
+			on:mousedown={hide_menu}
+			on:keydown={eschide_menu} tabindex='0' >
+
 			<ContextMenu hide={menu().hide} x={menu().x} y={menu().y} inner={<WindowMenu />} />
 			<For each={data()} >
 				{(meta: _) => <Entry meta={meta} />}

@@ -2,7 +2,7 @@ import { type Component, For, createSignal, mergeProps } from 'solid-js';
 
 import styles from './DriveShortcuts.module.css';
 
-import { parse_svg } from '../App';
+import { parse_svg } from '../Drive';
 
 import sharedSVG from '../../../assets/shared.svg?raw';
 import filesSVG from '../../../assets/files.svg?raw';

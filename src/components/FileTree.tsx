@@ -1,5 +1,5 @@
 import { type Component, For, createResource, type JSX, } from 'solid-js';
-import { type _ } from '../App';
+import { type _ } from '../Drive';
 
 import styles from './FileTree.module.css';
 
