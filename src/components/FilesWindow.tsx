@@ -132,7 +132,9 @@ export const FilesWindow: Component = () => {
 	};
 
 	// MouseArea events
-	const [hl, hl_update] = createSignal({ hide: true, down: false, x: 0, y: 0, w: 1, h: 1 });
+	const [hl, hl_update] = createSignal({
+		hide: true, down: false, x: 0, y: 0, rx: false, ry: false, w: 1, h: 1
+	});
 	const move = (e: Event) => {
 		const me = (e as MouseEvent);
 		const x = me.clientX;
@@ -144,22 +146,28 @@ export const FilesWindow: Component = () => {
 				down: true,
 				x: x,
 				y: y,
+				rx: false,
+				ry: false,
 				w: params.w,
 				h: params.h,
 			}
 		})
 	};
 
-	const release = () => hl_update((props: _) => {
-		return {
-			down: false,
-			hide: true,
-			x: props.x,
-			y: props.y,
-			w: props.w,
-			h: props.h,
-		}
-	});
+	const release = () =>
+		hl_update((props: _) => {
+			return {
+				down: false,
+				hide: true,
+				x: props.x,
+				y: props.y,
+				rx: false,
+				ry: false,
+				w: 0,
+				h: 0,
+			}
+		});
+
 
 	const resize = (e: Event) => {
 
@@ -168,17 +176,17 @@ export const FilesWindow: Component = () => {
 		const x1 = me.clientX;
 		const y1 = me.clientY;
 
-		console.log(x1, y1);
-
 		hl_update((params: _) => {
-			const w = x1 - params.x;
-			const h = y1 - params.y;
+			const w = Math.abs(x1 - params.x);
+			const h = Math.abs(y1 - params.y);
 
 			return {
 				hide: false,
 				down: true,
 				x: params.x,
 				y: params.y,
+				rx: x1 < params.x,
+				ry: y1 < params.y,
 				w: w,
 				h: h,
 			}
@@ -211,15 +219,15 @@ export const FilesWindow: Component = () => {
 const MouseArea = (props: { hl: _ }) => {
 	const hl = () => props.hl;
 
-
 	return (
 		<div style={{
 			width: `${hl().w}px`,
 			height: `${hl().h}px`,
 			left: `${hl().x}px`,
 			top: `${hl().y}px`,
-		}} class={styles.MouseArea} hide={hl().hide} down={hl().down}>
+		}} class={styles.MouseArea} hide={hl().hide} down={hl().down} rx={hl().rx} ry={hl().ry}>
 		</div>
 	);
 
 };
+
