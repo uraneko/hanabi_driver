@@ -21,7 +21,11 @@ export const FileTree: Component = () => {
 
 	const move_dir = (e: Event) => {
 		const et = (e.target as HTMLElement);
-		if (et.className != `${styles.DirName}`) return;
+		if (!et.classList.contains(`${styles.DirName}`)) return;
+		// BUG this event triggers as intended 
+		// but sometimes the createResource function set on 
+		// FilesWindow will not trigger a refetch 
+		// reloading the page and trying again may fix it 
 
 		let new_path = et.textContent!
 		let path = new_path == "/" ? [""] : new_path.split('/');
@@ -43,7 +47,7 @@ export const FileTree: Component = () => {
 
 	return (
 		<div class={styles.FileTree}
-			onclick={move_dir}>
+			ondblclick={move_dir}>
 			<Dir level={0} name={tree()?.dirs[0]} tree={tree()} />
 		</div>
 	);
@@ -78,9 +82,10 @@ export const Dir: Component<{ level: number, name: string, tree: _ }> = (props: 
 	const toggle_entries = (e: Event) => {
 		const kbe = (e as KeyboardEvent);
 		if (!kbe.shiftKey) return;
-		e.stopPropagation();
 		const et = (e.target as HTMLElement);
-		if (et.className != `${styles.DirName}`) return;
+		if (!et.classList.contains(`${styles.DirName}`)) return;
+
+		e.stopPropagation();
 
 		toggle((show: boolean) => !show)
 	};

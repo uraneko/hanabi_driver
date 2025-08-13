@@ -37,15 +37,42 @@ button {
 }
 
 .Shortcuts {
+	height: 130px;
 	display: flex;
 	flex-direction: column;
+	overflow: hidden;
+	transition: 200ms height ease-in-out;
+
+	& :nth-child(1) {
+		transition: 200ms transform 50ms ease-in-out;
+	}
+
+	& :nth-child(2) {
+		transition: 200ms transform 50ms ease-in-out;
+	}
+
+	& :nth-child(3) {
+		transition: 200ms transform 50ms ease-in-out;
+	}
+
+	& :nth-child(4) {
+		transition: 200ms transform ease-in-out;
+	}
 }
 
 .Shortcuts[hide="true"] {
-	display: none !important;
+	height: 0;
+
+	& .ShortcutEntry {
+		transform: translateY(-30px);
+	}
 }
 
-.ShortcutEntry {}
+.ShortcutEntry {
+	display: flex;
+	transform: translateY(0px);
+	height: max-content;
+}
 
 .ShortcutButton {
 	display: flex;

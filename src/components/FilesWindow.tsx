@@ -1,8 +1,12 @@
 import { type Component, createEffect, createSignal, createResource, For } from 'solid-js';
 
 import rustSVG from '../../../file_icons/rust.svg?raw';
+import svgSVG from '../../../file_icons/svg.svg?raw';
+import html5SVG from '../../../file_icons/html5.svg?raw';
+import cssSVG from '../../../file_icons/css.svg?raw';
+import javascriptSVG from '../../../file_icons/javascript.svg?raw';
 import dirSVG from '../../../file_icons/dir.svg?raw'
-import helpSVG from '../../../file_icons/help.svg?raw'
+import unknSVG from '../../../file_icons/unkn.svg?raw'
 
 import { drive_ctx, DriveCtx, DEV_SERVER } from '../Drive';
 import { WindowMenu, ContextMenu } from './ContextMenu';
@@ -28,8 +32,16 @@ function entry_icon(kind: "File" | "Dir", ext: string | null): SVGSVGElement {
 	else switch (ext) {
 		case "Rs":
 			return parse_svg(rustSVG)
+		case "Html":
+			return parse_svg(html5SVG)
+		case "Css":
+			return parse_svg(cssSVG)
+		case "Js":
+			return parse_svg(javascriptSVG)
+		case "Svg":
+			return parse_svg(svgSVG)
 		default:
-			return parse_svg(helpSVG)
+			return parse_svg(unknSVG)
 	}
 }
 
@@ -202,7 +214,7 @@ export const FilesWindow: Component = () => {
 			onpointerdown={locate}
 			on:mouseup={release}
 
-			onmousedown={inner_dir}
+			ondblclick={inner_dir}
 			onkeydown={outer_dir}
 
 			on:contextmenu={show_menu}

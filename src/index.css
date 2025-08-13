@@ -14,8 +14,8 @@ body {
 		'Helvetica Neue', sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-	/* background-color: #c7c7e3; */
-	background: linear-gradient(328deg, rgba(204, 217, 208, 1) 0%, rgba(245, 244, 225, 1) 100%);
+	background-color: aliceblue;
+	/* background: linear-gradient(328deg, rgba(204, 217, 208, 1) 0%, rgba(245, 244, 225, 1) 100%); */
 }
 
 #root {

@@ -1,11 +1,11 @@
 .FilesWindow {
 	background: none;
 	border-radius: 1px;
-	border: 1px solid #485D6C;
+	/* border: 1px solid #485D6C; */
 	/* border-left: none; */
 	border-right: none;
 	grid-column: 3/13;
-	grid-row: 2/12;
+	grid-row: 2/13;
 
 	overflow: auto;
 
@@ -36,7 +36,8 @@
 	}
 
 	&:hover {
-		background: linear-gradient(328deg, rgba(204, 217, 208, 1) 0%, rgba(245, 244, 225, 1) 100%);
+		background: #89a6b236;
+		/* background: linear-gradient(328deg, rgba(204, 217, 208, 1) 0%, rgba(245, 244, 225, 1) 100%); */
 	}
 }
 
