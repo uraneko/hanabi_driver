@@ -48,6 +48,7 @@ function entry_icon(kind: "File" | "Dir", ext: string | null): SVGSVGElement {
 }
 
 export const FilesWindow: Component = () => {
+	let FW!: HTMLDivElement;
 	const { drive, sync } = drive_ctx();
 
 	const inner_dir = (e: Event) => {
@@ -83,74 +84,15 @@ export const FilesWindow: Component = () => {
 	const [data, { mutate, refetch }] =
 		createResource(() => drive().base + drive().dir.join('/'), fetchCurrentDir);
 
-	const [menu, toggle] = createSignal({ hide: true, x: 0, y: 0 });
-	const show_menu = (e: Event) => {
-		e.preventDefault();
-		const me = (e as MouseEvent);
-
-		toggle((params: _) => {
-			return {
-				hide: false,
-				x: me.clientX,
-				y: me.clientY,
-			}
-		})
-	};
-
-	const w = 134;
-	const h = 164;
-	const hide_menu = (e: Event) => {
-		const me = (e as MouseEvent);
-		const new_x = me.clientX;
-		const new_y = me.clientY;
-
-		toggle((params: _) => {
-			const x = () => params.x;
-			const y = () => params.y;
-
-			return new_x >= x() && new_x < x() + w && new_y >= y() && new_y < y() + h ?
-				{
-					hide: false,
-					x: x(),
-					y: y(),
-				} : {
-					hide: true,
-					x: 0,
-					y: 0,
-				}
-		})
-	};
-
-	const eschide_menu = (e: Event) => {
-		const kbe = (e as KeyboardEvent);
-		const esc = kbe.key;
-		if (esc != "Escape") return;
-
-		toggle((_params: _) => {
-			return {
-				hide: true,
-				x: 0,
-				y: 0,
-			}
-		})
-	};
-
-
-
 	return (
-		<div class={styles.FilesWindow}
-			ondblclick={inner_dir}
-			onkeydown={outer_dir}
+		<div class={styles.FilesWindow} on:dblclick={inner_dir}
+			on:keydown={outer_dir} tabindex='0' ref={FW}>
 
-			on:contextmenu={show_menu}
-			on:mousedown={hide_menu}
-			on:keydown={eschide_menu} tabindex='0'>
 			<InteractiveArea>
-
-				<ContextMenu hide={menu().hide} x={menu().x} y={menu().y} inner={<WindowMenu />} />
+				<ContextMenu inner={<WindowMenu />} thing={FW} target={styles.FilesWindow} />
 				{data() === undefined ? <div>Loading...</div> :
 					<Matrix arr={data()} call={Entry} />}
-			</InteractiveArea >
+			</InteractiveArea>
 		</div >
 	);
 };

@@ -80,8 +80,6 @@ export const InteractiveArea = (props: { children: JSX.Element }) => {
 				top: `${hl().y}px`,
 			}} class={styles.MouseSelection} down={hl().down} rx={hl().rx} ry={hl().ry}>
 			</div>
-
-
 			{children()}
 		</div>
 	);
