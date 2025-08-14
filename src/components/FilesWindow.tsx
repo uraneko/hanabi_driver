@@ -10,6 +10,8 @@ import unknSVG from '../../../file_icons/unkn.svg?raw'
 
 import { drive_ctx, DriveCtx, DEV_SERVER } from '../Drive';
 import { WindowMenu, ContextMenu } from './ContextMenu';
+import { Matrix } from './Matrix';
+import { InteractiveArea } from './InteractiveArea';
 
 import { type _, parse_svg } from '../Drive';
 
@@ -44,21 +46,6 @@ function entry_icon(kind: "File" | "Dir", ext: string | null): SVGSVGElement {
 			return parse_svg(unknSVG)
 	}
 }
-
-const Entry = (props: { meta: _ }) => {
-	const meta = () => props.meta;
-
-	const icon = entry_icon(meta()?.kind, meta()?.ext);
-
-	return (
-		<button class={styles.Entry} kind={meta()?.kind}>
-			{icon}
-			<span class={styles.EntryName}>{meta()?.name}</span>
-			<span class={styles.EntrySize}>{(meta()?.size.size).toFixed(2)}&thinsp;{meta()?.size.unit}</span>
-			<span class={styles.EntryCreated}>{meta()?.created.slice(0, 10)}</span>
-		</button>
-	);
-};
 
 export const FilesWindow: Component = () => {
 	const { drive, sync } = drive_ctx();
@@ -148,100 +135,39 @@ export const FilesWindow: Component = () => {
 		})
 	};
 
-	// MouseArea events
-	const [hl, hl_update] = createSignal({
-		hide: true, down: false, x: 0, y: 0, rx: false, ry: false, w: 1, h: 1
-	});
-	const locate = (e: Event) => {
-		const me = (e as MouseEvent);
-		const x = me.clientX;
-		const y = me.clientY;
 
-		hl_update((params: _) => {
-			return {
-				hide: false,
-				down: true,
-				x: x,
-				y: y,
-				rx: false,
-				ry: false,
-				w: params.w,
-				h: params.h,
-			}
-		})
-	};
-
-	const release = () =>
-		hl_update((props: _) => {
-			return {
-				down: false,
-				hide: true,
-				x: props.x,
-				y: props.y,
-				rx: false,
-				ry: false,
-				w: 0,
-				h: 0,
-			}
-		});
-
-	const resize = (e: Event) => {
-		if (!hl().down) return;
-		const me = (e as MouseEvent);
-		const x1 = me.clientX;
-		const y1 = me.clientY;
-
-		hl_update((params: _) => {
-			const w = Math.abs(x1 - params.x);
-			const h = Math.abs(y1 - params.y);
-
-			return {
-				hide: false,
-				down: true,
-				x: params.x,
-				y: params.y,
-				rx: x1 < params.x,
-				ry: y1 < params.y,
-				w: w,
-				h: h,
-			}
-		})
-	}
 
 	return (
 		<div class={styles.FilesWindow}
-			onmousemove={resize}
-			onpointerdown={locate}
-			on:mouseup={release}
-
 			ondblclick={inner_dir}
 			onkeydown={outer_dir}
 
 			on:contextmenu={show_menu}
 			on:mousedown={hide_menu}
 			on:keydown={eschide_menu} tabindex='0'>
+			<InteractiveArea>
 
-			<ContextMenu hide={menu().hide} x={menu().x} y={menu().y} inner={<WindowMenu />} />
-			<For each={data()} >
-				{(meta: _) => <Entry meta={meta} />}
-			</For >
-			<MouseArea hl={hl()} update={hl_update} />
+				<ContextMenu hide={menu().hide} x={menu().x} y={menu().y} inner={<WindowMenu />} />
+				{data() === undefined ? <div>Loading...</div> :
+					<Matrix arr={data()} call={Entry} />}
+			</InteractiveArea >
 		</div >
 	);
 };
 
-const MouseArea = (props: { hl: _ }) => {
-	const hl = () => props.hl;
+const Entry = (props: { meta: _ }) => {
+	const meta = () => props.meta;
+
+	const icon = entry_icon(meta()?.kind, meta()?.ext);
 
 	return (
-		<div style={{
-			width: `${hl().w}px`,
-			height: `${hl().h}px`,
-			left: `${hl().x}px`,
-			top: `${hl().y}px`,
-		}} class={styles.MouseArea} hide={hl().hide} down={hl().down} rx={hl().rx} ry={hl().ry}>
-		</div>
+		<button class={styles.Entry} kind={meta()?.kind} draggable={true}>
+			{icon}
+			<span class={styles.EntryName}>{meta()?.name}</span>
+			<span class={styles.EntrySize}>{(meta()?.size.size)?.toFixed(2)}&thinsp;{meta()?.size.unit}</span>
+			<span class={styles.EntryCreated}>{meta()?.created.slice(0, 10)}</span>
+			<span class={styles.EntryChildren}>{meta()?.children ?? 0}</span>
+		</button>
 	);
-
 };
 

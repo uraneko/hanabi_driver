@@ -18,12 +18,11 @@
 	border: none;
 
 	display: grid;
-	grid-template-columns: auto 1fr 1fr 1fr;
+	grid-template-columns: auto 1fr 1fr 1fr 1fr;
 	grid-template-rows: 1fr;
 
 	align-items: center;
 	justify-content: start;
-
 
 	padding: 8px;
 	font-weight: bold;
@@ -51,30 +50,4 @@
 
 .EntryCreated {
 	grid-column: 4/5;
-}
-
-.MouseArea {
-	display: flex;
-	position: absolute;
-	background: #5899658a;
-	border: forestgreen;
-
-	&[hide="true"] {
-		display: none
-	}
-
-	&[rx="true"] {
-		transform-origin: top left;
-		transform: rotateY(180deg);
-	}
-
-	&[ry="true"] {
-		transform-origin: top left;
-		transform: rotateX(180deg);
-	}
-
-	&[ry="true"][rx="true"] {
-		transform-origin: top left;
-		transform: rotate(180deg);
-	}
 }
