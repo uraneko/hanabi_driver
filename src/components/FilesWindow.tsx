@@ -12,6 +12,7 @@ import { drive_ctx, DriveCtx, DEV_SERVER } from '../Drive';
 import { WindowMenu, ContextMenu } from './ContextMenu';
 import { Matrix } from './Matrix';
 import { InteractiveArea } from './InteractiveArea';
+import { Pending } from './Pending';
 
 import { type _, parse_svg } from '../Drive';
 
@@ -90,8 +91,7 @@ export const FilesWindow: Component = () => {
 
 			<InteractiveArea>
 				<ContextMenu inner={<WindowMenu />} thing={FW} target={styles.FilesWindow} />
-				{data() === undefined ? <div>Loading...</div> :
-					<Matrix arr={data()} call={Entry} />}
+				<Pending resolver={data()} inner={<Matrix arr={data()} call={Entry} />} />
 			</InteractiveArea>
 		</div >
 	);
@@ -108,7 +108,7 @@ const Entry = (props: { meta: _ }) => {
 			<span class={styles.EntryName}>{meta()?.name}</span>
 			<span class={styles.EntrySize}>{(meta()?.size.size)?.toFixed(2)}&thinsp;{meta()?.size.unit}</span>
 			<span class={styles.EntryCreated}>{meta()?.created.slice(0, 10)}</span>
-			<span class={styles.EntryChildren}>{meta()?.children ?? 0}</span>
+			<span class={styles.EntryChildren}>{meta()?.children ?? '_'}</span>
 		</button>
 	);
 };

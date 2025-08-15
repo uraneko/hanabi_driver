@@ -1,0 +1,32 @@
+.Pending[resolved="false"] {
+	width: 100%;
+	height: 100%;
+	background: inherit;
+	color: inherit;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.PendingInner {
+	width: 100%;
+	height: 100%;
+	background: inherit;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+
+}
+
+.PendingText {
+	color: inherit;
+	font-size: 16pt;
+	font-weight: bold;
+	font-style: italic;
+	align-self: center;
+	justify-self: center;
+}

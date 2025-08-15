@@ -47,6 +47,11 @@ export const parse_svg = (svg: string): SVGSVGElement => {
 }
 
 export type _ = any;
+export type Maybe<T> = T | undefined;
+
+export function is<T>(t: T): boolean {
+	return t !== undefined
+}
 
 export function map_from_json(json: Object): Map<string, _> {
 	const map = new Map();
