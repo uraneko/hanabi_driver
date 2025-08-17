@@ -1,10 +1,9 @@
 import { type Component, For, createEffect, createSignal, mergeProps, createResource } from 'solid-js';
 
 import styles from './DriveHints.module.css';
-
 import driveRatioSVG from '../../../assets/drive-ratio.svg?raw';
-
 import { parse_svg, DEV_SERVER, map_from_json } from '../Drive';
+import { maybe_resolved } from './Pending';
 
 type _ = any;
 
@@ -23,14 +22,15 @@ async function fetchDriveHints(): Promise<HintsMap> {
 export const DriveHints: Component = () => {
 	const [data, { mutate, refetch }] = createResource(fetchDriveHints);
 
-
-
-	return (
-		<div class={styles.DriveHints}>
-			<RatioBar hints={data()!} />
-			<RatioNotes hints={data()!} />
-		</div>
-	);
+	return (<div class={styles.DriveHints}>
+		{
+			maybe_resolved(data, () =>
+				<div class={styles.Ratio}>
+					<RatioSpear hints={data()!} />
+					<RatioNotes hints={data()!} />
+				</div>
+			)}
+	</div >);
 };
 
 type HintsMap = {
@@ -47,14 +47,14 @@ const RatioNotes: Component<{ hints: HintsMap }> = (props: { hints: HintsMap }) 
 	</div >)
 };
 
-const RatioBar: Component<{ hints: HintsMap }> = (props: { hints: HintsMap }) => {
+const RatioSpear: Component<{ hints: HintsMap }> = (props: { hints: HintsMap }) => {
 	const hints = () => props.hints;
 
 	const svg = parse_svg(driveRatioSVG);
 
-	return (<div class={styles.RatioBar}>
-		<div class={styles.BarContainer}>
-			<div class={styles.BarProgress} style={{
+	return (<div class={styles.RatioSpear}>
+		<div class={styles.SpearContainer}>
+			<div class={styles.SpearProgress} style={{
 				width: `${ratio(hints()?.total, hints()?.used)}%`
 			}}></div>
 		</div>

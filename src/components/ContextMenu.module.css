@@ -22,6 +22,9 @@
 	display: none;
 }
 
+.Download {}
+
+.Upload {}
 
 .WindowMenu {
 	display: flex;

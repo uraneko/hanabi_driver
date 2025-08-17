@@ -4,17 +4,12 @@ import { type _, type Maybe, is } from '../Drive';
 
 import styles from './Pending.module.css';
 
-export const Pending = (props: { resolver: Maybe<_>, inner: JSX.Element }) => {
-	const resolved = () => is(props.resolver);
-	const inner = () => props.inner;
+export function maybe_resolved(resolver: () => Maybe<_>, inner: () => JSX.Element): JSX.Element {
+	const resolved = () => is(resolver());
 
-	return (
-		<div class={styles.Pending} resolved={resolved()}>
-			{resolved() ? inner() : <PendingComp />}
-		</div >
-	);
+	return resolved() ? inner() : <PendingInner />
 };
 
-const PendingComp = () => {
+const PendingInner = () => {
 	return (<div class={styles.PendingInner}><span class={styles.PendingText}>Loading...</span></div>);
 };

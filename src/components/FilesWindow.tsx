@@ -9,10 +9,10 @@ import dirSVG from '../../../file_icons/dir.svg?raw'
 import unknSVG from '../../../file_icons/unkn.svg?raw'
 
 import { drive_ctx, DriveCtx, DEV_SERVER } from '../Drive';
-import { WindowMenu, ContextMenu } from './ContextMenu';
+import { WindowMenu, ContextMenu, FileMenu, DirMenu } from './ContextMenu';
 import { Matrix } from './Matrix';
 import { InteractiveArea } from './InteractiveArea';
-import { Pending } from './Pending';
+import { maybe_resolved } from './Pending';
 
 import { type _, parse_svg } from '../Drive';
 
@@ -87,11 +87,11 @@ export const FilesWindow: Component = () => {
 
 	return (
 		<div class={styles.FilesWindow} on:dblclick={inner_dir}
-			on:keydown={outer_dir} tabindex='0' ref={FW}>
+			on:keydown={outer_dir} tabindex='0' ref={FW} base={drive().base} dir={drive().dir}>
 
 			<InteractiveArea>
-				<ContextMenu inner={<WindowMenu />} thing={FW} target={styles.FilesWindow} />
-				<Pending resolver={data()} inner={<Matrix arr={data()} call={Entry} />} />
+				<ContextMenu referrer={FW} targets={[[WindowMenu, styles.FilesWindow], [DirMenu, `${styles.Entry} DirEntry`], [FileMenu, `${styles.Entry} FileEntry`]]} />
+				{maybe_resolved(data, () => <Matrix arr={data()!} call={Entry} />)}
 			</InteractiveArea>
 		</div >
 	);
@@ -100,15 +100,15 @@ export const FilesWindow: Component = () => {
 const Entry = (props: { meta: _ }) => {
 	const meta = () => props.meta;
 
-	const icon = entry_icon(meta()?.kind, meta()?.ext);
+	const icon = entry_icon(meta().kind, meta().ext);
 
 	return (
-		<button class={styles.Entry} kind={meta()?.kind} draggable={true}>
+		<button class={`${styles.Entry} ${meta().kind}Entry`} kind={meta().kind} draggable={true} name={meta().name}>
 			{icon}
-			<span class={styles.EntryName}>{meta()?.name}</span>
-			<span class={styles.EntrySize}>{(meta()?.size.size)?.toFixed(2)}&thinsp;{meta()?.size.unit}</span>
-			<span class={styles.EntryCreated}>{meta()?.created.slice(0, 10)}</span>
-			<span class={styles.EntryChildren}>{meta()?.children ?? '_'}</span>
+			<span class={styles.EntryName}>{meta().name}</span>
+			<span class={styles.EntrySize}>{(meta().size.size).toFixed(2)}&thinsp;{meta().size.unit}</span>
+			<span class={styles.EntryCreated}>{meta().created.slice(0, 10)}</span>
+			<span class={styles.EntryChildren}>{meta().entries ?? '-'}</span>
 		</button>
 	);
 };

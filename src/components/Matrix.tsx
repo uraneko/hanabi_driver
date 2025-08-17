@@ -6,12 +6,12 @@ import styles from './Matrix.module.css';
 
 export const Matrix = (props: { arr: _[], call: Component<_>, r_init?: _, r_call?: Component[] }) => {
 	const arr = () => props.arr;
-	if (arr()?.length == 0) console.error("matrix items array cant be empty");
+	if (arr().length == 0) console.error("matrix items array cant be empty");
 
 	const call = () => props.call;
 
 	const columns = Object.keys(arr()[0]).filter((k) =>
-		["name", "ext", "size", "created", "children"].includes(k));
+		["name", "ext", "size", "created", "entries"].includes(k));
 
 	const r_init = () => props.r_init;
 	const r_call = () => props.r_call;

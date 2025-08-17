@@ -1,8 +1,8 @@
 import { type Component, For, createSignal, createResource, type JSX, } from 'solid-js';
+
 import { type _, drive_ctx, DriveCtx } from '../Drive';
-
+import { maybe_resolved } from './Pending';
 import styles from './FileTree.module.css';
-
 
 async function fetchFileTree(base: string): Promise<HTMLElement> {
 	const res = await fetch(`http://127.0.0.1:9998/ftree?path=${base}`,
@@ -48,7 +48,7 @@ export const FileTree: Component = () => {
 	return (
 		<div class={styles.FileTree}
 			ondblclick={move_dir}>
-			<Dir level={0} name={tree()?.dirs[0]} tree={tree()} />
+			{maybe_resolved(tree, () => <Dir level={0} name={tree()!.dirs[0]} tree={tree()} />)}
 		</div>
 	);
 };
