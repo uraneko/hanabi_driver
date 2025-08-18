@@ -21,6 +21,7 @@
     "vitest": "^3.0.0"
   },
   "dependencies": {
+    "comps": "link:../hanabi_components",
     "solid-js": "^1.9.5"
   }
 }

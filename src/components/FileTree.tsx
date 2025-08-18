@@ -1,10 +1,16 @@
-import { type Component, For, createSignal, createResource, type JSX, } from 'solid-js';
-
-import { type _, drive_ctx, DriveCtx } from '../Drive';
-import { maybe_resolved } from './Pending';
+import { type Component, For, createSignal, createEffect, createResource, type JSX, } from 'solid-js';
+import { drive_ctx, DriveCtx } from '../Drive';
+import { maybe_resolved } from 'comps/extra';
+import { type _ } from 'comps';
 import styles from './FileTree.module.css';
 
-async function fetchFileTree(base: string): Promise<HTMLElement> {
+type FTreeJson = {
+	base: string,
+	dirs: string[],
+	nodes: string[],
+}
+
+async function fetchFileTree(base: string): Promise<FTreeJson> {
 	const res = await fetch(`http://127.0.0.1:9998/ftree?path=${base}`,
 		{
 			method: "GET",
@@ -43,34 +49,15 @@ export const FileTree: Component = () => {
 		return fetchFileTree(drive().base);
 	}
 
-	const [tree, { mutate, refetch }] = createResource(fetchWrapper);
+	const [tree] = createResource(fetchWrapper);
 
 	return (
 		<div class={styles.FileTree}
 			ondblclick={move_dir}>
-			{maybe_resolved(tree, () => <Dir level={0} name={tree()!.dirs[0]} tree={tree()} />)}
+			{maybe_resolved(tree, () => <Dir level={0} name={tree().dirs[0]} tree={tree()} />)}
 		</div>
 	);
 };
-
-export const File: Component<{ level: number, name: string, }> = (props: { level: number, name: string }) => {
-	const level = () => props.level;
-	const name = () => props.name;
-
-	return (<button style={{
-		"padding-left": `${level() * 10}px`
-	}} class={styles.File} level={level()}>{name()}</button>);
-};
-
-function dir_nodes(json: _, dir: string) {
-	const idx = json?.dirs.indexOf(dir)
-
-	return json?.nodes[idx]
-}
-
-function is_dir(dirs: string[], maybe_dir: string): boolean {
-	return dirs.includes(maybe_dir);
-}
 
 export const Dir: Component<{ level: number, name: string, tree: _ }> = (props: { level: number, name: string, tree: _ }) => {
 	const level = () => props.level;
@@ -111,3 +98,23 @@ export const Dir: Component<{ level: number, name: string, tree: _ }> = (props: 
 		</div>
 	);
 };
+
+export const File: Component<{ level: number, name: string, }> = (props: { level: number, name: string }) => {
+	const level = () => props.level;
+	const name = () => props.name;
+
+	return (<button style={{
+		"padding-left": `${level() * 10}px`
+	}} class={styles.File} level={level()}>{name()}</button>);
+};
+
+function dir_nodes(json: _, dir: string) {
+	const idx = json?.dirs.indexOf(dir)
+
+	return json?.nodes[idx]
+}
+
+function is_dir(dirs: string[], maybe_dir: string): boolean {
+	return dirs.includes(maybe_dir);
+}
+

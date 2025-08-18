@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      comps:
+        specifier: link:../hanabi_components
+        version: link:../hanabi_components
       solid-js:
         specifier: ^1.9.5
         version: 1.9.5

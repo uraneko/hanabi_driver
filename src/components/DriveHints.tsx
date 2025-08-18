@@ -2,13 +2,13 @@ import { type Component, For, createEffect, createSignal, mergeProps, createReso
 
 import styles from './DriveHints.module.css';
 import driveRatioSVG from '../../../assets/drive-ratio.svg?raw';
-import { parse_svg, DEV_SERVER, map_from_json } from '../Drive';
-import { maybe_resolved } from './Pending';
+import { type _, parse_svg } from 'comps';
+import { maybe_resolved } from 'comps/extra';
 
-type _ = any;
+const origin = "http://localhost:9998";
 
 async function fetchDriveHints(): Promise<HintsMap> {
-	const res = await fetch(DEV_SERVER + "/dh?truncate",
+	const res = await fetch(origin + "/dh?truncate",
 		{
 			method: "GET",
 			headers: {

@@ -1,12 +1,10 @@
-import { type Component, For, createSignal, mergeProps } from 'solid-js';
-
+import { type Component } from 'solid-js';
+import { type _ } from 'comps';
 import { DriveShortcuts } from './DriveShortcuts';
 import { DriveHints } from './DriveHints';
 import { FileTree } from './FileTree';
 
 import styles from './SideTab.module.css';
-
-type _ = any;
 
 export const SideTab: Component = () => {
 	return (
