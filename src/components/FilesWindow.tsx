@@ -1,5 +1,6 @@
 import { type Component, createEffect, createSignal, createResource, For } from 'solid-js';
 import { WindowMenu, FileMenu, DirMenu } from './ContextMenus';
+import { FileViewer } from './FileViewer';
 import { InteractiveArea } from 'comps/wrappers';
 import { type _, parse_svg } from 'comps';
 import { Matrix } from 'comps/containers';
@@ -94,13 +95,14 @@ export const FilesWindow: Component = () => {
 		});
 	};
 
-	const [data, { mutate, refetch }] =
+	const [data] =
 		createResource(() => drive().base + drive().dir.join('/'), fetchCurrentDir);
 
 	return (
 		<div class={styles.FilesWindow} on:dblclick={inner_dir}
 			on:keydown={outer_dir} tabindex='0' ref={FW} base={drive().base} dir={drive().dir}>
 
+			<FileViewer referrer={FW} />
 			<InteractiveArea>
 				<ContextMenu referrer={FW} targets={[[WindowMenu, styles.FilesWindow], [DirMenu, `${styles.Entry} DirEntry`], [FileMenu, `${styles.Entry} FileEntry`]]} />
 				{maybe_resolved(data, () => <Matrix arr={data()!} call={Entry} />)}

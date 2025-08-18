@@ -1,0 +1,66 @@
+.FileViewer {
+	position: absolute;
+	width: 40vw;
+	height: 60vh;
+	overflow: auto;
+	display: flex;
+	flex-direction: column;
+	color: #595858;
+	background: aliceblue;
+	border: 1px solid #595858;
+	border-radius: 3px;
+	left: 30vw;
+	top: 20vh;
+	padding: 6px;
+	padding-top: 1px;
+}
+
+.FileViewer[hide="true"] {
+	display: none;
+}
+
+.Header {
+	align-items: center;
+	justify-content: space-between;
+	height: 2.2em;
+	width: 100%;
+	border-bottom: 1px solid #595858;
+	padding-bottom: 1px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.CloseButton {
+	cursor: pointer;
+	font-weight: bold;
+	background: none;
+	border: none;
+	width: 22px;
+	height: 22px;
+	padding: 0;
+	border-radius: 50%;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	&:hover {
+		background: #dc143c73;
+	}
+}
+
+
+.FileTitle {
+	font-weight: bold;
+	font-family: carlito;
+	font-size: 1em;
+}
+
+.FileContents {
+	font-size: 12pt;
+	text-align: start;
+	margin-bottom: 1em;
+	padding: 0.65em;
+	white-space: break-spaces;
+}
