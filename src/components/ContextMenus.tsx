@@ -43,16 +43,17 @@ export const WindowMenu = (props: { ref: Element, target: Element }) => {
 	);
 };
 
+const origin = "http://localhost:9998";
 
 export const FileMenu = (props: { ref: Element, target: Element }) => {
 	const ref = () => props.ref;
 	const target = () => props.target;
-	const path = ref().getAttribute("base") + "/" + ref().getAttribute("dir") + target().getAttribute("name");
-	console.log("path --->", path);
+	const path = ref().getAttribute("base") +
+		ref().getAttribute("dir")!.replaceAll(',', '/') + '/' +
+		target().getAttribute("name");
 
 	const actions = async (e: Event) => {
 		const et = e.target as Element;
-		console.log(et);
 		if (et.classList.contains(styles.Download)) {
 			const res = await fetch(origin + "/drive/download?path=" + path, {
 				method: "GET",
@@ -61,6 +62,12 @@ export const FileMenu = (props: { ref: Element, target: Element }) => {
 				}
 			});
 			const bytes = await res.bytes();
+			const blob = new Blob([bytes], { type: "application/octet-stream" });
+			const objectURL = URL.createObjectURL(blob);
+			const anchor = document.createElement("a");
+			anchor.href = objectURL;
+			anchor.click();
+			URL.revokeObjectURL(objectURL);
 		}
 	};
 

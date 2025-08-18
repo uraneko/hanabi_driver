@@ -28,7 +28,9 @@
 	padding-bottom: 1px;
 	display: flex;
 	flex-direction: row;
-	align-items: center;
+
+	align-self: flex-start;
+	position: sticky;
 }
 
 .CloseButton {
@@ -50,8 +52,8 @@
 	}
 }
 
-
 .FileTitle {
+	margin-left: 160px;
 	font-weight: bold;
 	font-family: carlito;
 	font-size: 1em;
@@ -62,5 +64,6 @@
 	text-align: start;
 	margin-bottom: 1em;
 	padding: 0.65em;
+	margin-top: 1.4em;
 	white-space: break-spaces;
 }
