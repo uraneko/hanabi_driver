@@ -1,11 +1,11 @@
 import { type Component, For, createEffect, createSignal, mergeProps, createResource } from 'solid-js';
 
 import styles from './DriveHints.module.css';
-import driveRatioSVG from '../../../assets/drive-ratio.svg?raw';
-import { type _, parse_svg } from 'comps';
-import { maybe_resolved } from 'comps/extra';
+import driveRatioSVG from '../../../assets/icons/drive-ratio.svg?raw';
+import { type _, parse_svg } from 'core';
+import { maybe_resolved } from 'core/extra';
 
-const origin = "http://localhost:9998";
+const origin = "";
 
 async function fetchDriveHints(): Promise<HintsMap> {
 	const res = await fetch(origin + "/dh?truncate",

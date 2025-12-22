@@ -1,4 +1,4 @@
-import { type _ } from 'comps';
+import { type _ } from 'core';
 import styles from './ContextMenus.module.css';
 
 export const WindowMenu = (props: { ref: Element, target: Element }) => {
@@ -43,7 +43,7 @@ export const WindowMenu = (props: { ref: Element, target: Element }) => {
 	);
 };
 
-const origin = "http://localhost:9998";
+const origin = "";
 
 export const FileMenu = (props: { ref: Element, target: Element }) => {
 	const ref = () => props.ref;

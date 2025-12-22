@@ -2,13 +2,13 @@ import { type Component, For, createSignal, mergeProps } from 'solid-js';
 
 import styles from './DriveShortcuts.module.css';
 
-import { parse_svg } from 'comps';
+import { parse_svg } from 'core';
 
-import sharedSVG from '../../../assets/shared.svg?raw';
-import filesSVG from '../../../assets/files.svg?raw';
-import trashSVG from '../../../assets/trash.svg?raw';
-import archiveSVG from '../../../assets/archive.svg?raw';
-import jetSVG from '../../../assets/jet.svg?raw';
+import sharedSVG from '../../../assets/icons/shared.svg?raw';
+import filesSVG from '../../../assets/icons/files.svg?raw';
+import trashSVG from '../../../assets/icons/trash.svg?raw';
+import archiveSVG from '../../../assets/icons/archive.svg?raw';
+import jetSVG from '../../../assets/icons/jet.svg?raw';
 
 type _ = any;
 

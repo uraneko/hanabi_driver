@@ -1,7 +1,7 @@
 import { type Component, For, createSignal, createEffect, createResource, type JSX, } from 'solid-js';
 import { drive_ctx, DriveCtx } from '../Drive';
-import { maybe_resolved } from 'comps/extra';
-import { type _ } from 'comps';
+import { maybe_resolved } from 'core/extra';
+import { type _ } from 'core';
 import styles from './FileTree.module.css';
 
 type FTreeJson = {
@@ -10,8 +10,10 @@ type FTreeJson = {
 	nodes: string[],
 }
 
+const origin = "";
+
 async function fetchFileTree(base: string): Promise<FTreeJson> {
-	const res = await fetch(`http://127.0.0.1:9998/ftree?path=${base}`,
+	const res = await fetch(`${origin}/ftree?path=${base}`,
 		{
 			method: "GET",
 			headers: {

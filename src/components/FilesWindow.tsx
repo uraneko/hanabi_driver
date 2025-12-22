@@ -1,27 +1,27 @@
 import { type Component, createEffect, createSignal, createResource, For } from 'solid-js';
 import { WindowMenu, FileMenu, DirMenu } from './ContextMenus';
 import { FileViewer } from './FileViewer';
-import { InteractiveArea } from 'comps/wrappers';
-import { type _, parse_svg } from 'comps';
-import { Matrix } from 'comps/containers';
-import { ContextMenu, maybe_resolved } from 'comps/extra';
+import { InteractiveArea } from 'core/wrappers';
+import { type _, parse_svg } from 'core';
+import { Matrix } from 'core/containers';
+import { ContextMenu, maybe_resolved } from 'core/extra';
 import { drive_ctx, DriveCtx } from '../Drive';
 import styles from './FilesWindow.module.css';
 
-import rustSVG from '../../../file_icons/rust.svg?raw';
-import svgSVG from '../../../file_icons/svg.svg?raw';
-import html5SVG from '../../../file_icons/html5.svg?raw';
-import cssSVG from '../../../file_icons/css.svg?raw';
-import javascriptSVG from '../../../file_icons/javascript.svg?raw';
-import dirSVG from '../../../file_icons/dir.svg?raw'
-import unknSVG from '../../../file_icons/unkn.svg?raw'
-import jsonSVG from '../../../file_icons/json.svg?raw'
-import tsSVG from '../../../file_icons/typescript.svg?raw'
-import mdSVG from '../../../file_icons/markdown.svg?raw'
-import tomlSVG from '../../../file_icons/toml.svg?raw'
+import rustSVG from '../../../assets/file_icons/rust.svg?raw';
+import svgSVG from '../../../assets/file_icons/svg.svg?raw';
+import html5SVG from '../../../assets/file_icons/html5.svg?raw';
+import cssSVG from '../../../assets/file_icons/css.svg?raw';
+import javascriptSVG from '../../../assets/file_icons/javascript.svg?raw';
+import dirSVG from '../../../assets/file_icons/dir.svg?raw'
+import unknSVG from '../../../assets/file_icons/unkn.svg?raw'
+import jsonSVG from '../../../assets/file_icons/json.svg?raw'
+import tsSVG from '../../../assets/file_icons/typescript.svg?raw'
+import mdSVG from '../../../assets/file_icons/markdown.svg?raw'
+import tomlSVG from '../../../assets/file_icons/toml.svg?raw'
 
 
-const origin = "http://localhost:9998";
+const origin = "";
 
 async function fetchCurrentDir(path: string) {
 	const res = await fetch(origin + `/drive/read_dir?path=${path}`,

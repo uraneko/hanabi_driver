@@ -2,11 +2,11 @@ import { type Component, createResource, createSignal } from 'solid-js';
 import { drive_ctx } from '../Drive';
 import styles from './FileViewer.module.css';
 import fstl from './FilesWindow.module.css';
-import { type _, type Maybe, parse_svg } from 'comps';
+import { type _, type Maybe, parse_svg } from 'core';
 
-import closeSVG from '../../../assets/close.svg?raw';
+import closeSVG from '../../../assets/icons/close.svg?raw';
 
-const origin = "http://localhost:9998";
+const origin = "";
 
 async function fetchFile(path: Maybe<string>) {
 	const resource = origin + "/drive/view?path=" + path!;

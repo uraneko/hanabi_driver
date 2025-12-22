@@ -1,5 +1,5 @@
 import { type Component } from 'solid-js';
-import { type _ } from 'comps';
+import { type _ } from 'core';
 import { DriveShortcuts } from './DriveShortcuts';
 import { DriveHints } from './DriveHints';
 import { FileTree } from './FileTree';

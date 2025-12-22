@@ -1,6 +1,5 @@
 html,
-body,
-#root {
+body {
 	margin: 0 !important;
 	padding: 0;
 	border: 0;
@@ -16,12 +15,6 @@ body {
 	-moz-osx-font-smoothing: grayscale;
 	background-color: aliceblue;
 	/* background: linear-gradient(328deg, rgba(204, 217, 208, 1) 0%, rgba(245, 244, 225, 1) 100%); */
-}
-
-#root {
-	/* display: grid; */
-	/* grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr; */
-	/* grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr; */
 }
 
 code {
